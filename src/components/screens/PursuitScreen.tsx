@@ -40,7 +40,7 @@ export const PursuitScreen: React.FC<PursuitScreenProps> = ({ gameState }) => {
   const heat = gameState.heat;
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-6 space-y-6">
+    <div className="w-full max-w-4xl mx-auto px-4 py-6 space-y-6" role="region" aria-label="Pursuit Dashboard">
       {/* Top Header Bar */}
       <div className="flex flex-wrap items-center justify-between border-b border-surfacelight pb-4 gap-4">
         <div className="flex items-center space-x-3 rtl:space-x-reverse">
@@ -70,7 +70,11 @@ export const PursuitScreen: React.FC<PursuitScreenProps> = ({ gameState }) => {
           </div>
 
           <div className="text-center py-4">
-            <div className="font-mono font-black text-4xl sm:text-5xl md:text-6xl tracking-tight text-bone font-mono drop-shadow-[0_0_15px_rgba(233,228,216,0.15)]">
+            <div
+              className="font-mono font-black text-4xl sm:text-5xl md:text-6xl tracking-tight text-bone font-mono drop-shadow-[0_0_15px_rgba(233,228,216,0.15)]"
+              aria-live="off"
+              aria-label={`Time remaining ${timeRemainingFormatted}`}
+            >
               {timeRemainingFormatted}
             </div>
             <p className="text-xs font-mono text-bone/50 mt-2">
@@ -105,7 +109,14 @@ export const PursuitScreen: React.FC<PursuitScreenProps> = ({ gameState }) => {
               </span>
             </div>
 
-            <div className="w-full h-4 bg-obsidian border border-surfacelight rounded p-0.5 relative overflow-hidden">
+            <div
+              className="w-full h-4 bg-obsidian border border-surfacelight rounded p-0.5 relative overflow-hidden"
+              role="progressbar"
+              aria-valuenow={heat}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label={t('heatLevel')}
+            >
               <div
                 className={`h-full rounded transition-all duration-500 ${
                   heat > 80 ? 'bg-crimson shadow-[0_0_10px_#B11226]' : 'bg-warninggold'
@@ -134,7 +145,7 @@ export const PursuitScreen: React.FC<PursuitScreenProps> = ({ gameState }) => {
           </h3>
         </div>
 
-        <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+        <div className="space-y-2 max-h-48 overflow-y-auto pr-1" aria-live="polite" aria-relevant="additions">
           {gameState.eventLog.length === 0 ? (
             <p className="text-xs font-mono text-bone/40 py-2 italic">
               {t('noEventsYet')}
