@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #08090B;
+    color: #E9E4D8;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  [dir="rtl"] {
+    font-family: 'Noto Sans Arabic', 'JetBrains Mono', sans-serif;
+  }
+
+  /* Accessible Focus Ring */
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid #D6B66A;
+    outline-offset: 3px;
+  }
+}
+
+/* CRT and Scanlines overlay */
+.crt-overlay {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+}
+
+.vignette {
+  background: radial-gradient(
+    circle,
+    rgba(0,0,0,0) 50%,
+    rgba(8,9,11,0.8) 90%,
+    rgba(8,9,11,0.98) 100%
+  );
+  pointer-events: none;
+}
+
+/* Red warning flash */
+@keyframes warning-flash {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.15; }
+}
+
+.animate-warning-flash {
+  animation: warning-flash 2s ease-in-out infinite;
+}
+
+/* Reduced Motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  .crt-overlay,
+  .animate-warning-flash,
+  .animate-pulse-fast,
+  .animate-glitch,
+  .animate-scanline,
+  .animate-ping,
+  .animate-bounce,
+  .animate-pulse {
+    animation: none !important;
+    background: none !important;
+    transform: none !important;
+  }
+}
+
+.reduced-motion .crt-overlay,
+.reduced-motion .animate-warning-flash,
+.reduced-motion .animate-pulse-fast,
+.reduced-motion .animate-glitch,
+.reduced-motion .animate-scanline,
+.reduced-motion .animate-ping,
+.reduced-motion .animate-bounce,
+.reduced-motion .animate-pulse {
+  animation: none !important;
+  background: none !important;
+  transform: none !important;
+}
