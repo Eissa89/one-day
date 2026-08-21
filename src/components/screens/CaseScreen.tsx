@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useI18n } from '../../i18n/I18nContext';
 import { Case } from '../../types/game';
 import { FileText, ArrowRight, ShieldCheck } from 'lucide-react';
+import gsap from 'gsap';
 
 interface CaseScreenProps {
   currentCase: Case | null;
@@ -15,6 +16,22 @@ export const CaseScreen: React.FC<CaseScreenProps> = ({
   onAcceptFate,
 }) => {
   const { t, isRTL } = useI18n();
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isReduced || !cardRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        cardRef.current,
+        { opacity: 0, scale: 0.96 },
+        { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' }
+      );
+    }, cardRef);
+
+    return () => ctx.revert();
+  }, [currentCase]);
 
   const caseTitle = currentCase ? t(currentCase.titleKey, currentCase.defaultTitle) : t('caseTitleDefault');
   const caseDesc = currentCase ? t(currentCase.descriptionKey, currentCase.defaultDescription) : t('caseDescDefault');
@@ -33,7 +50,7 @@ export const CaseScreen: React.FC<CaseScreenProps> = ({
       </div>
 
       {/* Case File Card */}
-      <div className="w-full bg-surface border border-surfacelight hover:border-crimson/50 transition p-6 rounded-lg space-y-6 shadow-2xl relative">
+      <div ref={cardRef} className="w-full bg-surface border border-surfacelight hover:border-crimson/50 transition p-6 rounded-lg space-y-6 shadow-2xl relative">
         <div className="flex items-center justify-between border-b border-surfacelight pb-4">
           <div className="flex items-center space-x-2 rtl:space-x-reverse text-crimson text-sm font-mono font-bold">
             <FileText className="w-4 h-4" />

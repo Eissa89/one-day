@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useI18n } from '../../i18n/I18nContext';
 import { AlertTriangle, ArrowRight, ShieldAlert } from 'lucide-react';
+import gsap from 'gsap';
 
 interface IntroScreenProps {
   onEnter: () => void;
@@ -8,9 +9,25 @@ interface IntroScreenProps {
 
 export const IntroScreen: React.FC<IntroScreenProps> = ({ onEnter }) => {
   const { t, isRTL } = useI18n();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isReduced || !containerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        containerRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 py-8 text-center max-w-3xl mx-auto space-y-8">
+    <div ref={containerRef} className="flex flex-col items-center justify-center min-h-[80vh] px-4 py-8 text-center max-w-3xl mx-auto space-y-8">
       {/* Title block */}
       <div className="space-y-4">
         <div className="inline-flex items-center space-x-2 rtl:space-x-reverse px-3 py-1 rounded-full border border-crimson/50 bg-crimson/10 text-crimson text-xs font-mono tracking-widest uppercase">

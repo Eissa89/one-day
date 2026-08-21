@@ -35,7 +35,7 @@ export const Header: React.FC<{
   };
 
   return (
-    <header className="w-full border-b border-surfacelight bg-obsidian/90 backdrop-blur-md px-4 py-3 flex items-center justify-between z-40 sticky top-0">
+    <header className="w-full border-b border-surfacelight bg-obsidian/90 backdrop-blur-md px-4 py-3 flex items-center justify-between z-40 sticky top-0" role="banner">
       <div className="flex items-center space-x-3 rtl:space-x-reverse">
         <span className="font-display font-extrabold text-lg md:text-xl tracking-wider text-bone">
           ONE DAY
@@ -45,7 +45,7 @@ export const Header: React.FC<{
         </span>
       </div>
 
-      <div className="flex items-center space-x-2 md:space-x-4 rtl:space-x-reverse text-xs font-mono">
+      <nav aria-label="System Settings" className="flex items-center space-x-2 md:space-x-4 rtl:space-x-reverse text-xs font-mono">
         {/* Reduced Motion Toggle */}
         <button
           onClick={toggleMotion}
@@ -76,13 +76,13 @@ export const Header: React.FC<{
         {/* Language Toggle */}
         <button
           onClick={toggleLang}
-          className="flex items-center space-x-1 rtl:space-x-reverse px-2.5 py-1.5 rounded border border-crimson/60 bg-crimson/10 text-bone hover:bg-crimson/20 transition font-bold"
+          className="flex items-center space-x-1 rtl:space-x-reverse px-2.5 py-1.5 min-h-[44px] min-w-[44px] rounded border border-crimson/60 bg-crimson/10 text-bone hover:bg-crimson/20 transition font-bold"
           aria-label="Toggle Language"
         >
           <Globe className="w-3.5 h-3.5" />
           <span>{t('langToggle')}</span>
         </button>
-      </div>
+      </nav>
     </header>
   );
 };
