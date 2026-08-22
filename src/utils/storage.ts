@@ -24,6 +24,9 @@ export const DEFAULT_GAME_STATE: GameState = {
   record: INITIAL_RECORDS,
   eventLog: [],
   lastUpdated: Date.now(),
+  discoveredEvidenceIds: [],
+  investigationDecision: null,
+  consequenceBranch: null,
 };
 
 export const DEFAULT_USER_PREFS: UserPreferences = {
@@ -90,6 +93,9 @@ export function sanitizeGameState(raw: unknown): GameState {
     record,
     eventLog: Array.isArray(obj.eventLog) ? obj.eventLog.slice(0, 20) : [],
     lastUpdated: Date.now(),
+    discoveredEvidenceIds: Array.isArray(obj.discoveredEvidenceIds) ? obj.discoveredEvidenceIds : [],
+    investigationDecision: obj.investigationDecision || null,
+    consequenceBranch: obj.consequenceBranch || null,
   };
 }
 

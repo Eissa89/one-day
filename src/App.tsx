@@ -25,6 +25,7 @@ export function App() {
     triggerCaught,
     triggerEscaped,
     triggerRandomEvent,
+    makeDecision,
     nextDay,
     resetGame,
     devFastForward,
@@ -74,7 +75,10 @@ export function App() {
         )}
 
         {gameState.status === 'PURSUIT' && (
-          <PursuitScreen gameState={gameState} />
+          <PursuitScreen
+            gameState={gameState}
+            onMakeDecision={makeDecision}
+          />
         )}
 
         {gameState.status === 'CAUGHT' && (

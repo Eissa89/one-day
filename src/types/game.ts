@@ -6,6 +6,22 @@ export type GameStatus =
   | 'ESCAPED'
   | 'VICTORY';
 
+export interface EvidencePiece {
+  id: string;
+  titleKey: string;
+  defaultTitle: string;
+  contentKey: string;
+  defaultContent: string;
+  factKey: string;
+  defaultFact: string;
+  interpretationAKey: string;
+  defaultInterpretationA: string;
+  interpretationBKey: string;
+  defaultInterpretationB: string;
+}
+
+export type MajorDecision = 'CONFRONT' | 'FOLLOW';
+
 export interface Case {
   id: string;
   caseNumber: string;
@@ -14,6 +30,7 @@ export interface Case {
   defaultTitle: string;
   defaultDescription: string;
   multiplier: number;
+  evidence?: EvidencePiece[];
 }
 
 export type RecordStatus = 'active' | 'resolved';
@@ -46,6 +63,9 @@ export interface GameState {
   record: RecordEntry[];
   eventLog: FictionalEvent[];
   lastUpdated: number;
+  discoveredEvidenceIds: string[];
+  investigationDecision: MajorDecision | null;
+  consequenceBranch: string | null;
 }
 
 export interface UserPreferences {

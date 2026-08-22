@@ -201,6 +201,34 @@ export function useGameEngine() {
     });
   }, []);
 
+  // Make a major investigation decision (CONFRONT vs FOLLOW)
+  const makeDecision = useCallback((decision: 'CONFRONT' | 'FOLLOW') => {
+    soundEngine.playWarningPulse();
+    updateState((prev) => {
+      const branchText = decision === 'CONFRONT'
+        ? 'CONFRONTED FRIEND: Friend alerted. 23:30 meeting pattern shifted. Direct answers extracted, but secrecy lost.'
+        : 'FOLLOWED SECRETLY: Friend unaware. Maintained stealth toward 23:30 meeting. Unknown caller remains unalerted.';
+
+      const consequenceEvent: FictionalEvent = {
+        id: `ev-decision-${Date.now()}`,
+        timestamp: Date.now(),
+        messageKey: decision === 'CONFRONT' ? 'consequence_confront_msg' : 'consequence_follow_msg',
+        defaultMessage: branchText,
+        heatDelta: decision === 'CONFRONT' ? 25 : 10,
+      };
+
+      const newHeat = Math.min(100, prev.heat + consequenceEvent.heatDelta);
+
+      return {
+        ...prev,
+        investigationDecision: decision,
+        consequenceBranch: branchText,
+        heat: newHeat,
+        eventLog: [consequenceEvent, ...prev.eventLog],
+      };
+    });
+  }, [updateState]);
+
   // Dev Controls (Guarded strictly by import.meta.env.DEV)
   const devFastForward = useCallback((msToAdd: number) => {
     if (!import.meta.env.DEV) return;
@@ -221,6 +249,7 @@ export function useGameEngine() {
     triggerCaught,
     triggerEscaped,
     triggerRandomEvent,
+    makeDecision,
     nextDay,
     resetGame,
     devFastForward,

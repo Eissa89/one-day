@@ -67,10 +67,33 @@ export const CaseScreen: React.FC<CaseScreenProps> = ({
           {caseDesc}
         </p>
 
+        {currentCase && (
+          <div className="space-y-4 border-t border-surfacelight pt-4">
+            <h3 className="text-xs font-mono font-bold text-warninggold uppercase tracking-wider text-left rtl:text-right">
+              RECOVERED EVIDENCE FILES (DRAFT 0)
+            </h3>
+            <div className="grid grid-cols-1 gap-3">
+              {(currentCase.evidence || []).map((ev) => (
+                <div key={ev.id} className="bg-obsidian/60 border border-surfacelight p-3.5 rounded space-y-2 text-left rtl:text-right font-mono text-xs">
+                  <div className="font-bold text-bone text-sm">{t(ev.titleKey, ev.defaultTitle)}</div>
+                  <pre className="whitespace-pre-wrap font-mono text-bone/80 bg-surfacelight/30 p-2 rounded text-[11px] leading-relaxed border border-surfacelight/40">
+                    {t(ev.contentKey, ev.defaultContent)}
+                  </pre>
+                  <div className="text-warninggold font-semibold text-[11px]">{t(ev.factKey, ev.defaultFact)}</div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[10px] text-bone/70 pt-1">
+                    <div className="bg-crimson/10 border border-crimson/20 p-1.5 rounded">{t(ev.interpretationAKey, ev.defaultInterpretationA)}</div>
+                    <div className="bg-warninggold/10 border border-warninggold/20 p-1.5 rounded">{t(ev.interpretationBKey, ev.defaultInterpretationB)}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="text-xs font-mono text-bone/50 border-t border-surfacelight pt-4 text-left rtl:text-right">
           • NON-CRIMINAL ABSTRACT SIMULATION MECHANIC
           <br />
-          • ACCEPTING ASSIGNS A MANDATORY 24-HOUR COUNTDOWN
+          • ACCEPTING ASSIGNS A MANDATORY 24-HOUR COUNTDOWN TO THE 23:30 DEADLINE
         </div>
       </div>
 

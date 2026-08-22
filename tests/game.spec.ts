@@ -20,6 +20,7 @@ test.describe('ONE DAY — Comprehensive Web Experience Test Suite', () => {
 
     await expect(page.getByText('STATUS: ACTIVE')).toBeVisible();
     await expect(page.getByText('CURRENT PENALTY: ×1')).toBeVisible();
+    await expect(page.getByText('RECOVERED EVIDENCE FILES (DRAFT 0)')).toBeVisible();
     await page.screenshot({ path: 'tests/screenshots/02-case-screen.png' });
 
     await page.getByRole('button', { name: 'ACCEPT YOUR FATE' }).click();
@@ -28,6 +29,12 @@ test.describe('ONE DAY — Comprehensive Web Experience Test Suite', () => {
     await expect(page.getByText('TIME REMAINING')).toBeVisible();
     await expect(page.getByText('HEAT', { exact: true })).toBeVisible();
     await expect(page.getByText('ACTIVE PURSUIT')).toBeVisible();
+
+    // Verify Case #001 Major Decision
+    await expect(page.getByText('MAJOR DECISION — 23:30 DEADLINE APPROACHING')).toBeVisible();
+    await page.getByRole('button', { name: 'OPTION A — CONFRONT NOW' }).click();
+    await expect(page.getByText('CONSEQUENCE BRANCH:')).toBeVisible();
+
     await page.screenshot({ path: 'tests/screenshots/03-pursuit-screen.png' });
   });
 

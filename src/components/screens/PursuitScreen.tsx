@@ -5,9 +5,10 @@ import { Activity, Radio, AlertTriangle, ShieldAlert } from 'lucide-react';
 
 interface PursuitScreenProps {
   gameState: GameState;
+  onMakeDecision?: (decision: 'CONFRONT' | 'FOLLOW') => void;
 }
 
-export const PursuitScreen: React.FC<PursuitScreenProps> = ({ gameState }) => {
+export const PursuitScreen: React.FC<PursuitScreenProps> = ({ gameState, onMakeDecision }) => {
   const { t } = useI18n();
   const [timeRemainingFormatted, setTimeRemainingFormatted] = useState('23:59:59');
 
@@ -135,6 +136,62 @@ export const PursuitScreen: React.FC<PursuitScreenProps> = ({ gameState }) => {
           </div>
         </div>
       </div>
+
+      {/* Major Decision Component for Case #001 */}
+      {gameState.currentCase && (
+        <div className="bg-surface border border-warninggold/50 p-6 rounded-lg space-y-4 shadow-2xl">
+          <div className="flex items-center justify-between border-b border-surfacelight pb-3">
+            <h3 className="font-mono text-sm text-warninggold font-bold uppercase tracking-wider">
+              MAJOR DECISION — 23:30 DEADLINE APPROACHING
+            </h3>
+            <span className="text-xs font-mono text-bone/60">
+              {gameState.investigationDecision ? `DECISION MADE: ${gameState.investigationDecision}` : 'DECISION PENDING'}
+            </span>
+          </div>
+
+          <p className="text-xs font-mono text-bone/80 text-left rtl:text-right">
+            You hold 3 pieces of contradictory evidence. You do not know if your friend is betraying or protecting your brother. Choose which risk to accept:
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            <button
+              onClick={() => onMakeDecision && onMakeDecision('CONFRONT')}
+              disabled={!!gameState.investigationDecision}
+              className={`p-4 rounded border text-left rtl:text-right font-mono transition ${
+                gameState.investigationDecision === 'CONFRONT'
+                  ? 'bg-crimson/30 border-crimson text-bone'
+                  : 'bg-obsidian border-crimson/50 hover:bg-crimson/20 text-bone'
+              }`}
+            >
+              <div className="font-bold text-sm text-crimson">OPTION A — CONFRONT NOW</div>
+              <p className="text-[11px] text-bone/80 mt-1">
+                Force an immediate explanation. Friend becomes alerted; meeting structure shifts. Direct answers extracted, but secrecy lost.
+              </p>
+            </button>
+
+            <button
+              onClick={() => onMakeDecision && onMakeDecision('FOLLOW')}
+              disabled={!!gameState.investigationDecision}
+              className={`p-4 rounded border text-left rtl:text-right font-mono transition ${
+                gameState.investigationDecision === 'FOLLOW'
+                  ? 'bg-warninggold/30 border-warninggold text-bone'
+                  : 'bg-obsidian border-warninggold/50 hover:bg-warninggold/20 text-bone'
+              }`}
+            >
+              <div className="font-bold text-sm text-warninggold">OPTION B — FOLLOW SECRETLY</div>
+              <p className="text-[11px] text-bone/80 mt-1">
+                Maintain stealth toward 23:30 rendezvous. Friend remains unaware. Preserve access to unknown caller, but risk arriving too late.
+              </p>
+            </button>
+          </div>
+
+          {gameState.consequenceBranch && (
+            <div className="mt-3 p-3 bg-surfacelight border border-warninggold/40 rounded text-xs font-mono text-warninggold text-left rtl:text-right">
+              <strong>CONSEQUENCE BRANCH:</strong> {gameState.consequenceBranch}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Bottom Section: Live Activity Log */}
       <div className="bg-surface border border-surfacelight p-6 rounded-lg space-y-4 shadow-xl">
